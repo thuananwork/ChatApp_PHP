@@ -1,0 +1,602 @@
+/* =========================== */
+/* CSS Variables & Reset       */
+/* =========================== */
+:root {
+    --primary: #4facfe;
+    --secondary: #00f2fe;
+    --light-bg: #f7f9fc;
+    --white: #fff;
+    --dark: #333;
+    --border: transparent; /* Đường viền đã được gỡ bỏ */
+    --shadow: rgba(0, 0, 0, 0.08);
+    --bg-blur: rgba(255, 255, 255, 0.5);
+}
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+body {
+    font-family: 'Open Sans', sans-serif;
+    background: var(--light-bg);
+    color: var(--dark);
+    -webkit-font-smoothing: antialiased;
+}
+
+/* =========================== */
+/* Header                      */
+/* =========================== */
+header {
+    background: linear-gradient(90deg, var(--primary), var(--secondary));
+    color: var(--white);
+    padding: 15px 30px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+header h1 {
+    font-size: 24px;
+}
+header nav a {
+    color: var(--white);
+    margin-left: 20px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.3s;
+}
+header nav a:hover {
+    color: #d1eaff;
+}
+
+/* Dropdown menu styles */
+.nav-menu {
+    position: relative;
+    display: inline-block;
+}
+.menu-toggle {
+    cursor: pointer;
+    font-size: 28px;
+    padding: 8px;
+    color: var(--white);
+    transition: transform 0.3s ease;
+}
+.menu-toggle:hover {
+    transform: scale(1.1);
+}
+.menu-items {
+    position: absolute;
+    top: calc(100% + 10px);
+    right: 0;
+    width: 250px;
+    background: var(--white);
+    border: 1px solid rgba(255,255,255,0.3);
+    border-radius: 12px;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-20px);
+    transition: opacity 0.4s ease, transform 0.4s ease, visibility 0.4s;
+    list-style: none;
+    margin: 0;
+    padding: 8px 0;
+    z-index: 1000;
+}
+.menu-items li {
+    border-bottom: 1px solid rgba(240,240,240,0.8);
+}
+.menu-items li:last-child {
+    border-bottom: none;
+}
+.menu-items li a {
+    display: block;
+    padding: 14px 20px;
+    color: var(--primary);
+    text-decoration: none;
+    font-weight: 600;
+    transition: background 0.3s ease, transform 0.3s ease, color 0.3s ease;
+}
+.menu-items li a:hover {
+    background: var(--bg-blur);
+    transform: translateX(5px);
+}
+.nav-menu.active .menu-items {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+/* =========================== */
+/* Container & Dashboard Layout*/
+/* =========================== */
+.container {
+    max-width: 1200px;
+    margin: 40px auto;
+    background: var(--white);
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+.dashboard-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+.dashboard-header h2 {
+    font-size: 28px;
+    color: var(--primary);
+}
+.dashboard {
+    display: flex;
+    gap: 30px;
+}
+.sidebar {
+    flex: 0 0 280px;
+    padding-right: 20px;
+}
+.content {
+    flex-grow: 1;
+    padding-left: 20px;
+}
+
+/* =========================== */
+/* Sidebar Sections            */
+/* =========================== */
+.sidebar .sidebar-section {
+    margin-bottom: 25px;
+}
+.sidebar h3 {
+    font-size: 20px;
+    color: var(--primary);
+    margin-bottom: 10px;
+    padding-bottom: 5px;
+}
+.sidebar ul {
+    list-style: none;
+    margin: 10px 0;
+    padding: 0;
+}
+.sidebar li {
+    padding: 10px 0;
+}
+.sidebar li a {
+    text-decoration: none;
+    color: #000;
+    font-weight: bold;
+    padding-left: 10px;
+    transition: color 0.3s;
+}
+.sidebar li a:hover {
+    color: var(--secondary);
+}
+.sidebar-links a {
+    display: block;
+    margin: 10px 0;
+    text-decoration: none;
+    color: #555;
+    font-size: 14px;
+    transition: color 0.3s;
+}
+.sidebar-links a:hover {
+    color: var(--secondary);
+}
+
+/* =========================== */
+/* Thanh Tìm Kiếm             */
+/* =========================== */
+.dashboard-search {
+    margin-bottom: 25px;
+}
+.search-form {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+.search-form input[type="text"] {
+    width: 100%;
+    padding: 10px 15px;
+    border: 1px solid #ddd;
+    border-radius: 30px;
+    font-size: 14px;
+    transition: border-color 0.3s;
+}
+.search-form input[type="text"]:focus {
+    border-color: var(--primary);
+}
+.search-btn {
+    background: none;
+    border: none;
+    color: var(--primary);
+    font-size: 18px;
+    margin-left: -40px;
+    cursor: pointer;
+    transition: color 0.3s;
+}
+.search-btn:hover {
+    color: var(--secondary);
+}
+#searchResultsContainer {
+    margin-top: 15px;
+}
+.search-results {
+    list-style: none;
+    padding: 0;
+}
+.search-results li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+}
+.search-results li .user-info {
+    display: flex;          /* Đặt Flex để avatar & tên nằm trên cùng một hàng */
+    align-items: center;    /* Căn giữa theo chiều dọc */
+}
+.search-results li .user-info img {
+    width: 40px;            /* Kích thước nhỏ hơn */
+    height: 40px;
+    border-radius: 50%;     /* Hiển thị trong khung tròn */
+    object-fit: cover;      /* Cắt hình vừa khung */
+    margin-right: 10px;     /* Khoảng cách giữa avatar và tên */
+}
+.search-results li a {
+    text-decoration: none;
+    color: var(--primary);
+    font-weight: 600;
+    transition: color 0.3s;
+}
+.search-results li a:hover {
+    color: var(--secondary);
+}
+
+/* =========================== */
+/* Form Tạo Nhóm               */
+/* =========================== */
+.create-group {
+    margin-top: 25px;
+}
+.create-group h3 {
+    font-size: 18px;
+    color: var(--primary);
+    margin-bottom: 10px;
+    padding-bottom: 5px;
+}
+.create-group form {
+    display: flex;
+    flex-direction: column;
+}
+.create-group input[type="text"] {
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+    margin-bottom: 15px;
+    transition: border-color 0.3s;
+}
+.create-group input[type="text"]:focus {
+    border-color: var(--primary);
+}
+.create-group button {
+    padding: 12px;
+    background: var(--primary);
+    border: none;
+    border-radius: 4px;
+    color: var(--white);
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 0.3s, transform 0.2s;
+}
+.create-group button:hover {
+    background: var(--secondary);
+    transform: scale(1.02);
+}
+
+/* =========================== */
+/* Content Card              */
+/* =========================== */
+.content-card {
+    padding: 25px;
+    background: #fafafa;
+    border-radius: 6px;
+    box-shadow: 0 2px 4px var(--shadow);
+}
+
+/* =========================== */
+/* Chat Interface              */
+/* =========================== */
+.chat-container {
+    display: flex;
+    flex-direction: column;
+    height: 550px;
+    border-radius: 10px;
+    overflow: hidden;
+    background: #fafafa;
+}
+.chat-box {
+    flex-grow: 1;
+    padding: 20px;
+    overflow-y: auto;
+    background: #f0f2f5;
+    scroll-behavior: smooth;
+}
+.chat-message {
+    padding: 12px 18px;
+    margin: 12px 0;
+    border-radius: 25px;
+    max-width: 65%;
+    font-size: 15px;
+    line-height: 1.6;
+    box-shadow: 0 2px 4px var(--shadow);
+    animation: slideIn 0.4s forwards;
+}
+@keyframes slideIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+.chat-message.sent {
+    background: #dcf8c6;
+    margin-left: auto;
+    text-align: right;
+}
+.chat-message.received {
+    background: var(--white);
+    margin-right: auto;
+}
+.chat-message .time {
+    display: block;
+    font-size: 11px;
+    color: #999;
+    margin-top: 5px;
+}
+
+/* =========================== */
+/* Chat Form                   */
+/* =========================== */
+.chat-form {
+    display: flex;
+    align-items: center;
+    padding: 15px;
+    background: var(--white);
+}
+.chat-form textarea {
+    flex-grow: 1;
+    padding: 12px 16px;
+    border: 1px solid #ddd;
+    border-radius: 30px;
+    font-size: 15px;
+    transition: border 0.3s;
+    resize: none;
+}
+.chat-form textarea:focus {
+    border-color: var(--primary);
+}
+.chat-form button {
+    margin-left: 15px;
+    background: var(--primary);
+    border: none;
+    border-radius: 30px;
+    color: var(--white);
+    padding: 12px 24px;
+    cursor: pointer;
+    font-size: 15px;
+    transition: background 0.3s;
+}
+.chat-form button:hover {
+    background: var(--secondary);
+}
+
+/* =========================== */
+/* Auth Pages (Login/Signup)   */
+/* =========================== */
+.auth-page {
+    background: linear-gradient(135deg, #a1c4fd, #c2e9fb);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+}
+.auth-container {
+    width: 100%;
+    max-width: 400px;
+    padding: 20px;
+}
+.auth-card {
+    background: var(--white);
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    padding: 30px;
+    animation: fadeInUp 0.8s ease both;
+}
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+.auth-card h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: var(--primary);
+    font-size: 26px;
+}
+.auth-card .error {
+    color: #e74c3c;
+    text-align: center;
+    margin-bottom: 15px;
+}
+.auth-card form {
+    margin-top: 20px;
+}
+.auth-card label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 600;
+    color: #555;
+}
+.auth-card input {
+    width: 100%;
+    padding: 12px 15px;
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    transition: border-color 0.3s;
+    font-size: 16px;
+}
+.auth-card input:focus {
+    border-color: var(--primary);
+    outline: none;
+}
+.auth-btn {
+    width: 100%;
+    padding: 12px;
+    background: var(--primary);
+    border: none;
+    border-radius: 4px;
+    color: var(--white);
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 0.3s, transform 0.2s;
+    margin-top: 10px;
+}
+.auth-btn:hover {
+    background: var(--secondary);
+    transform: scale(1.02);
+}
+.auth-switch {
+    text-align: center;
+    font-size: 14px;
+    margin-top: 15px;
+}
+.auth-switch a {
+    color: var(--primary);
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.3s;
+}
+.auth-switch a:hover {
+    color: var(--secondary);
+}
+
+/* =========================== */
+/* Profile Page                */
+/* =========================== */
+.profile-page {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+    background: var(--light-bg);
+}
+.profile-container {
+    width: 100%;
+    max-width: 500px;
+}
+.profile-card {
+    background: var(--white);
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    padding: 30px;
+    animation: fadeInUp 0.8s ease both;
+}
+.profile-card h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: var(--primary);
+    font-size: 26px;
+}
+.profile-field {
+    margin-bottom: 15px;
+}
+.profile-field label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 600;
+    color: #555;
+}
+.profile-field input[type="text"],
+.profile-field input[type="password"],
+.profile-field input[type="file"] {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 16px;
+    transition: border-color 0.3s;
+}
+.profile-field input[type="text"]:focus,
+.profile-field input[type="password"]:focus,
+.profile-field input[type="file"]:focus {
+    border-color: var(--primary);
+    outline: none;
+}
+.profile-avatar {
+    display: block;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 10px;
+}
+
+/* =========================== */
+/* Miscellaneous               */
+/* =========================== */
+.friend-list img.avatar {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 10px;
+    vertical-align: middle;
+}
+.friend-list li span {
+    white-space: nowrap;
+}
+.message {
+    text-align: center;
+    color: green;
+    margin-bottom: 15px;
+}
+.error {
+    text-align: center;
+    color: #e74c3c;
+    margin-bottom: 15px;
+}
+
+/* =========================== */
+/* Phần liên quan đến hình ảnh */
+/* =========================== */
+/* Đặt ảnh trong nội dung chính */
+.content .box {
+    position: relative;
+    width: 130px;       /* Kích thước ảnh có thể điều chỉnh */
+    height: 130px;
+    max-width: 100%;    /* Đảm bảo không vượt ra ngoài vùng chứa */
+    margin: 20px auto;  /* Căn giữa theo chiều ngang và tạo khoảng cách trên dưới */
+    transform-style: preserve-3d;
+    animation: animate 20s infinite linear;
+}
+@keyframes animate {
+    0% {
+        transform: perspective(1000px) rotateY(0deg);
+    }
+    100% {
+        transform: perspective(1000px) rotateY(360deg);
+    }
+}
+.content .box span {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    transform-origin: center;
+    transform-style: preserve-3d;
+    transform: rotateY(calc(var(--i) * 45deg)) translateZ(300px);
+    -webkit-box-reflect: below 0px linear-gradient(transparent, transparent, #0004);
+}
+.content .box span img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
