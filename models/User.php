@@ -13,18 +13,32 @@ class User
     // Đăng ký
     public function register($username, $email, $phone, $passwordHash, $avatarPath = null)
     {
+        // Kiểm tra tên hiển thị đã tồn tại chưa
+        $checkUsernameStmt = $this->conn->prepare("SELECT COUNT(*) FROM users WHERE username = ?");
+        $checkUsernameStmt->execute([$username]);
+        if ($checkUsernameStmt->fetchColumn() > 0) {
+            return 'username_exists'; // Tên hiển thị đã tồn tại
+        }
+
         // Kiểm tra email đã tồn tại chưa
         $checkStmt = $this->conn->prepare("SELECT COUNT(*) FROM users WHERE email = ?");
         $checkStmt->execute([$email]);
         if ($checkStmt->fetchColumn() > 0) {
-            return false; // Email đã tồn tại
+            return 'email_exists'; // Email đã tồn tại
+        }
+
+        // Kiểm tra số điện thoại đã tồn tại chưa
+        $checkPhoneStmt = $this->conn->prepare("SELECT COUNT(*) FROM users WHERE phone = ?");
+        $checkPhoneStmt->execute([$phone]);
+        if ($checkPhoneStmt->fetchColumn() > 0) {
+            return 'phone_exists'; // Số điện thoại đã tồn tại
         }
 
         $stmt = $this->conn->prepare("
             INSERT INTO users(username, email, contact_email, phone, password, avatar)
             VALUES (?, ?, ?, ?, ?, ?)
         ");
-        return $stmt->execute([$username, $email, $email, $phone, $passwordHash, $avatarPath]);
+        return $stmt->execute([$username, $email, $email, $phone, $passwordHash, $avatarPath]) ? true : false;
     }
 
     // Đăng nhập

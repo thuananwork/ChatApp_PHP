@@ -3,22 +3,22 @@
         <div class="profile-card">
             <!-- Hiển thị avatar ở đầu trang với kích thước cố định và hình tròn -->
             <div class="profile-avatar-container" style="text-align:center; margin-bottom:20px;">
-                <?php if(!empty($user['avatar'])): ?>
+                <?php if (!empty($user['avatar'])): ?>
                     <img src="<?= htmlspecialchars($user['avatar']); ?>" alt="Avatar" class="profile-avatar-large" style="width:150px; height:150px; border-radius:50%; object-fit:cover;">
                 <?php else: ?>
                     <img src="assets/img/default-avatar.png" alt="Avatar" class="profile-avatar-large" style="width:150px; height:150px; border-radius:50%; object-fit:cover;">
                 <?php endif; ?>
             </div>
             <h2>Chỉnh sửa Hồ sơ</h2>
-            <?php if(isset($error)): ?>
+            <?php if (isset($error)) : ?>
                 <p class="error"><?= htmlspecialchars($error); ?></p>
             <?php endif; ?>
-            <?php if(isset($message)): ?>
-                <p class="message"><?= htmlspecialchars($message); ?></p>
+            <?php if (isset($message)) : ?>
+                <p class="success-message"><?= htmlspecialchars($message); ?></p>
             <?php endif; ?>
-            <form method="post" action="index.php?action=editProfile" enctype="multipart/form-data">
+            <form method="post" action="index.php?action=editProfile">
                 <div class="profile-field">
-                    <label for="username">Tên:</label>
+                    <label for="username">Tên hiển thị:</label>
                     <input type="text" name="username" id="username" value="<?= htmlspecialchars($user['username']); ?>" required>
                 </div>
                 <div class="profile-field">
@@ -28,11 +28,6 @@
                 <div class="profile-field">
                     <label for="confirm_password">Xác nhận mật khẩu mới:</label>
                     <input type="password" name="confirm_password" id="confirm_password" placeholder="Xác nhận mật khẩu mới">
-                </div>
-                <!-- Cho phép cập nhật Avatar nếu muốn -->
-                <div class="profile-field">
-                    <label for="avatar">Thay đổi Avatar:</label>
-                    <input type="file" name="avatar" id="avatar" accept="image/*">
                 </div>
                 <!-- Các trường bổ sung -->
                 <div class="profile-field">
