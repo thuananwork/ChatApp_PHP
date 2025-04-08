@@ -18,6 +18,7 @@ $msg = $_GET['msg'] ?? ''; // Thông báo (nếu có)
 
 <!DOCTYPE html>
 <html lang="vi">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -27,6 +28,7 @@ $msg = $_GET['msg'] ?? ''; // Thông báo (nếu có)
     <!-- CSS tùy chỉnh (nếu cần) -->
     <link rel="stylesheet" href="assets/css/style.css">
 </head>
+
 <body>
     <div class="container">
         <!-- Tiêu đề -->
@@ -50,7 +52,7 @@ $msg = $_GET['msg'] ?? ''; // Thông báo (nếu có)
                     <h3><i class="fas fa-users"></i> Bạn bè</h3>
                     <?php if (count($friends) > 0): ?>
                         <ul class="friend-list list-unstyled">
-                            <?php foreach ($friends as $friend): 
+                            <?php foreach ($friends as $friend):
                                 // Xử lý avatar
                                 if (!empty($friend['avatar'])) {
                                     if (strpos($friend['avatar'], 'uploads/avatars/') === 0 || strpos($friend['avatar'], 'assets/img/') === 0) {
@@ -62,17 +64,17 @@ $msg = $_GET['msg'] ?? ''; // Thông báo (nếu có)
                                     $avatarUrl = 'assets/img/default-avatar.png';
                                 }
                             ?>
-                            <li class="d-flex align-items-center">
-                                <a href="index.php?action=chat&to_id=<?= $friend['id']; ?>" class="d-flex align-items-center text-decoration-none mr-2">
-                                    <img src="<?= $avatarUrl; ?>" alt="Avatar" class="avatar">
-                                    <span class="ml-2"><?= htmlspecialchars($friend['username']); ?></span>
-                                </a>
-                                <button class="unfriend-btn btn btn-sm btn-outline-danger" 
-                                        data-friend-id="<?= $friend['id']; ?>" 
+                                <li class="d-flex align-items-center">
+                                    <a href="index.php?action=chat&to_id=<?= $friend['id']; ?>" class="d-flex align-items-center text-decoration-none mr-2">
+                                        <img src="<?= $avatarUrl; ?>" alt="Avatar" class="avatar">
+                                        <span class="ml-2"><?= htmlspecialchars($friend['username']); ?></span>
+                                    </a>
+                                    <button class="unfriend-btn btn btn-sm btn-outline-danger"
+                                        data-friend-id="<?= $friend['id']; ?>"
                                         data-friend-name="<?= htmlspecialchars($friend['username']); ?>">
-                                    <i class="fas fa-user-times"></i>
-                                </button>
-                            </li>
+                                        <i class="fas fa-user-times"></i>
+                                    </button>
+                                </li>
                             <?php endforeach; ?>
                         </ul>
                     <?php else: ?>
@@ -83,27 +85,27 @@ $msg = $_GET['msg'] ?? ''; // Thông báo (nếu có)
 
             <!-- Nội dung chính -->
             <section class="content col-md-8">
-    <div class="sidebar-section">
-        <h3><i class="fas fa-info-circle"></i> Hãy chiêm ngưỡng vẽ đẹp của Van Gogh</h3>
-    </div>
-    <div class="box">
-        <span style="--i:1;"><img src="../images/a1.jpg" alt=""></span>
-        <span style="--i:2;"><img src="../images/a2.jpg" alt=""></span>
-        <span style="--i:3;"><img src="../images/a3.jpg" alt=""></span>
-        <span style="--i:4;"><img src="../images/a4.jpg" alt=""></span>
-        <span style="--i:5;"><img src="../images/a5.jpg" alt=""></span>
-        <span style="--i:6;"><img src="../images/a6.jpg" alt=""></span>
-        <span style="--i:7;"><img src="../images/a7.jpg" alt=""></span>
-        <span style="--i:8;"><img src="../images/a8.jpg" alt=""></span>
-    </div>
-    <script type="text/javascript">
-        let box = document.querySelector('.box');
-        window.onmousemove = function(e){
-            let x = e.clientX/3;
-            box.style.transform = "perspective(1000px) rotateY("+x+"deg)";
-        }
-    </script>
-</section>
+                <div class="sidebar-section">
+                    <h3><i class="fas fa-info-circle"></i> Hãy chiêm ngưỡng vẽ đẹp của Van Gogh</h3>
+                </div>
+                <div class="box">
+                    <span style="--i:1;"><img src="../images/a1.jpg" alt=""></span>
+                    <span style="--i:2;"><img src="../images/a2.jpg" alt=""></span>
+                    <span style="--i:3;"><img src="../images/a3.jpg" alt=""></span>
+                    <span style="--i:4;"><img src="../images/a4.jpg" alt=""></span>
+                    <span style="--i:5;"><img src="../images/a5.jpg" alt=""></span>
+                    <span style="--i:6;"><img src="../images/a6.jpg" alt=""></span>
+                    <span style="--i:7;"><img src="../images/a7.jpg" alt=""></span>
+                    <span style="--i:8;"><img src="../images/a8.jpg" alt=""></span>
+                </div>
+                <script type="text/javascript">
+                    let box = document.querySelector('.box');
+                    window.onmousemove = function(e) {
+                        let x = e.clientX / 3;
+                        box.style.transform = "perspective(1000px) rotateY(" + x + "deg)";
+                    }
+                </script>
+            </section>
 
         </div>
     </div>
@@ -136,48 +138,49 @@ $msg = $_GET['msg'] ?? ''; // Thông báo (nếu có)
 
     <!-- JavaScript xử lý hủy kết bạn -->
     <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const unfriendButtons = document.querySelectorAll('.unfriend-btn');
-        const modal = document.getElementById('unfriendModal');
-        const friendNameSpan = document.getElementById('friendName');
-        const confirmUnfriendBtn = document.getElementById('confirmUnfriend');
-        let currentFriendId;
+        document.addEventListener('DOMContentLoaded', function() {
+            const unfriendButtons = document.querySelectorAll('.unfriend-btn');
+            const modal = document.getElementById('unfriendModal');
+            const friendNameSpan = document.getElementById('friendName');
+            const confirmUnfriendBtn = document.getElementById('confirmUnfriend');
+            let currentFriendId;
 
-        // Xử lý khi nhấp vào nút "Hủy kết bạn"
-        unfriendButtons.forEach(button => {
-            button.addEventListener('click', function() {
-                currentFriendId = this.getAttribute('data-friend-id');
-                const friendName = this.getAttribute('data-friend-name');
-                friendNameSpan.textContent = friendName;
-                $(modal).modal('show');
+            // Xử lý khi nhấp vào nút "Hủy kết bạn"
+            unfriendButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    currentFriendId = this.getAttribute('data-friend-id');
+                    const friendName = this.getAttribute('data-friend-name');
+                    friendNameSpan.textContent = friendName;
+                    $(modal).modal('show');
+                });
+            });
+
+            // Xử lý khi xác nhận hủy kết bạn trong modal
+            confirmUnfriendBtn.addEventListener('click', function() {
+                fetch('index.php?action=unfriend&friend_id=' + currentFriendId, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded'
+                        }
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            const friendItem = document.querySelector(`.unfriend-btn[data-friend-id="${currentFriendId}"]`).parentElement;
+                            friendItem.remove();
+                            $(modal).modal('hide');
+                        } else {
+                            alert('Hủy kết bạn thất bại.');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        alert('Đã xảy ra lỗi.');
+                    });
             });
         });
-
-        // Xử lý khi xác nhận hủy kết bạn trong modal
-        confirmUnfriendBtn.addEventListener('click', function() {
-            fetch('index.php?action=unfriend&friend_id=' + currentFriendId, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded'
-                }
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    const friendItem = document.querySelector(`.unfriend-btn[data-friend-id="${currentFriendId}"]`).parentElement;
-                    friendItem.remove();
-                    $(modal).modal('hide');
-                } else {
-                    alert('Hủy kết bạn thất bại.');
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('Đã xảy ra lỗi.');
-            });
-        });
-    });
     </script>
     <script src="assets/js/script.js"></script>
 </body>
+
 </html>
