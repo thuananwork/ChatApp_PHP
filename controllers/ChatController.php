@@ -2,16 +2,19 @@
 require_once 'BaseController.php';
 require_once __DIR__ . '/../models/Chat.php';
 
-class ChatController extends BaseController {
+class ChatController extends BaseController
+{
     private $chatModel;
-    
-    public function __construct() {
+
+    public function __construct()
+    {
         $this->chatModel = new Chat();
         session_start();
     }
-    
+
     // Gửi tin nhắn (cá nhân hoặc nhóm)
-    public function sendMessage() {
+    public function sendMessage()
+    {
         if (!isset($_SESSION['user'])) {
             header("Location: index.php?action=login");
             exit;
@@ -32,9 +35,10 @@ class ChatController extends BaseController {
             exit;
         }
     }
-    
+
     // Hiển thị khung chat cho tin nhắn cá nhân
-    public function chat() {
+    public function chat()
+    {
         if (!isset($_SESSION['user'])) {
             header("Location: index.php?action=login");
             exit;
@@ -45,28 +49,29 @@ class ChatController extends BaseController {
             header("Location: index.php?action=dashboard");
             exit;
         }
-        
+
         // Lấy lịch sử chat giữa 2 người
         $history = $this->chatModel->getChatHistory($user_id, $to_id);
-        
+
         // Lấy thông tin người dùng được chat (để hiển thị tên)
         require_once __DIR__ . '/../models/User.php';
         $userModel = new User();
         $toUserInfo = $userModel->getUserById($to_id);
         $to_user = $toUserInfo ? $toUserInfo['username'] : 'Người dùng';
-        
+
         // Truyền biến $to_user sang view
         $this->render('chat', [
-            'history' => $history, 
-            'to_id'   => $to_id, 
+            'history' => $history,
+            'to_id'   => $to_id,
             'to_user' => $to_user
         ]);
     }
-    
-    public function fetchChat() {
+
+    public function fetchChat()
+    {
         ini_set('display_errors', 1);
         error_reporting(E_ALL);
-    
+
         if (!isset($_SESSION['user'])) {
             echo json_encode([]);
             exit;
@@ -84,7 +89,8 @@ class ChatController extends BaseController {
     }
 
     // Xóa tin nhắn (chỉ cho phép người gửi xóa tin của mình)
-    public function deleteMessage() {
+    public function deleteMessage()
+    {
         if (!isset($_SESSION['user'])) {
             header("Location: index.php?action=login");
             exit;
@@ -102,7 +108,8 @@ class ChatController extends BaseController {
     }
 
     // Sửa tin nhắn (chỉ cho phép người gửi sửa tin của mình)
-    public function editMessage() {
+    public function editMessage()
+    {
         if (!isset($_SESSION['user'])) {
             header("Location: index.php?action=login");
             exit;
@@ -120,4 +127,3 @@ class ChatController extends BaseController {
         }
     }
 }
-?>

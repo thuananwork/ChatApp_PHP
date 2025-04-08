@@ -59,11 +59,15 @@ class UserController extends BaseController
                 return;
             }
 
-            // Kiểm tra email và số điện thoại đã tồn tại
+            // Thực hiện đăng ký
             $result = $this->userModel->register($username, $email, $phone, password_hash($password, PASSWORD_DEFAULT));
 
-            if ($result === 'username_exists') {
-                $errors['username'] = "Tên hiển thị đã được sử dụng. Vui lòng sử dụng tên hiển thị khác";
+            if ($result === true) {
+                $success = "Tài khoản đã đăng ký thành công!";
+                $this->render('register', ['success' => $success]);
+                return;
+            } else if ($result === 'username_exists') {
+                $errors['username'] = "Tên hiển thị đã được sử dụng. Vui lòng sử dụng tên hiển thị khác.";
                 $this->render('register', ['errors' => $errors]);
                 return;
             } else if ($result === 'email_exists') {
@@ -71,15 +75,11 @@ class UserController extends BaseController
                 $this->render('register', ['errors' => $errors]);
                 return;
             } else if ($result === 'phone_exists') {
-                $errors['phone'] = "Số điện thoại đã tồn tại trong cơ sở dữ liệu. Vui lòng sử dụng số điện thoại khác";
+                $errors['phone'] = "Số điện thoại đã được sử dụng. Vui lòng sử dụng số điện thoại khác.";
                 $this->render('register', ['errors' => $errors]);
                 return;
-            } else if ($result === true) {
-                $success = "Tài khoản đã đăng ký thành công!";
-                $this->render('register', ['success' => $success]);
-                return;
             } else {
-                $errors['general'] = "Đăng ký thất bại. Vui lòng thử lại sau.";
+                $errors['general'] = "Có lỗi xảy ra khi đăng ký. Vui lòng thử lại.";
                 $this->render('register', ['errors' => $errors]);
                 return;
             }
@@ -333,9 +333,12 @@ class UserController extends BaseController
             $confirmPassword = $_POST['confirm_password'] ?? '';
             $birth_date = $_POST['birth_date'] ?? '';
             $gender = $_POST['gender'] ?? '';
+            // Lấy từ hidden field vì không chỉnh sửa
             $phone = $_POST['phone'] ?? '';
             $contact_email = $_POST['contact_email'] ?? '';
             $location = $_POST['location'] ?? '';
+
+            // Checkbox: nếu được chọn thì giá trị 1, ngược lại 0
             $hide_phone = isset($_POST['hide_phone']) ? 1 : 0;
             $hide_email = isset($_POST['hide_email']) ? 1 : 0;
 
@@ -355,11 +358,29 @@ class UserController extends BaseController
                 $passwordHash = password_hash($newPassword, PASSWORD_DEFAULT);
             }
 
+            $avatarPath = $user['avatar'] ?? null;
+            if (isset($_FILES['avatar']) && $_FILES['avatar']['error'] === UPLOAD_ERR_OK) {
+                $targetDir = "uploads/avatars/";
+                if (!is_dir($targetDir)) {
+                    mkdir($targetDir, 0777, true);
+                }
+                $avatarName = basename($_FILES['avatar']['name']);
+                $targetFile = $targetDir . time() . "_" . $avatarName;
+                if (move_uploaded_file($_FILES['avatar']['tmp_name'], $targetFile)) {
+                    $avatarPath = $targetFile;
+                } else {
+                    error_log("Lỗi khi di chuyển file: " . print_r(error_get_last(), true));
+                    $error = "Không thể lưu file avatar.";
+                    $this->render('profile', ['user' => $user, 'error' => $error]);
+                    exit;
+                }
+            }
+
             if ($this->userModel->updateProfile(
                 $user['id'],
                 $username,
                 $passwordHash,
-                $user['avatar'], // Giữ nguyên avatar cũ
+                $avatarPath,
                 $birth_date,
                 $gender,
                 $phone,

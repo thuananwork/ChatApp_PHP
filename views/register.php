@@ -6,23 +6,23 @@
                 <p class="error"><?= htmlspecialchars($error); ?></p>
             <?php endif; ?>
             <?php if (isset($success)) : ?>
-                <p class="success"><?= htmlspecialchars($success); ?></p>
+                <p class="success" style="color: #28a745; font-weight: bold;"><?= htmlspecialchars($success); ?></p>
             <?php endif; ?>
             <form method="post" action="index.php?action=register">
                 <label>Tên hiển thị:</label>
-                <input type="text" name="username" placeholder="Nhập tên của bạn" value="<?= isset($success) ? '' : htmlspecialchars($_POST['username'] ?? ''); ?>">
+                <input type="text" name="username" placeholder="Nhập tên của bạn" value="<?= !isset($success) ? htmlspecialchars($_POST['username'] ?? '') : ''; ?>">
                 <?php if (isset($errors['username'])) : ?>
                     <p class="error"><?= htmlspecialchars($errors['username']); ?></p>
                 <?php endif; ?>
 
                 <label>Email:</label>
-                <input type="text" name="email" placeholder="Nhập email" value="<?= isset($success) ? '' : htmlspecialchars($_POST['email'] ?? ''); ?>">
+                <input type="text" name="email" placeholder="Nhập email" value="<?= !isset($success) ? htmlspecialchars($_POST['email'] ?? '') : ''; ?>">
                 <?php if (isset($errors['email'])) : ?>
                     <p class="error"><?= htmlspecialchars($errors['email']); ?></p>
                 <?php endif; ?>
 
                 <label>Số điện thoại:</label>
-                <input type="tel" name="phone" placeholder="Nhập số điện thoại" value="<?= isset($success) ? '' : htmlspecialchars($_POST['phone'] ?? ''); ?>">
+                <input type="tel" name="phone" placeholder="Nhập số điện thoại" value="<?= !isset($success) ? htmlspecialchars($_POST['phone'] ?? '') : ''; ?>">
                 <?php if (isset($errors['phone'])) : ?>
                     <p class="error"><?= htmlspecialchars($errors['phone']); ?></p>
                 <?php endif; ?>
@@ -55,17 +55,5 @@
         background-color: #ffe6e6;
         border: 1px solid #ff0000;
         border-radius: 4px;
-    }
-
-    .success {
-        color: #28a745;
-        font-size: 14px;
-        margin: 5px 0;
-        padding: 10px;
-        background-color: #d4edda;
-        border: 1px solid #28a745;
-        border-radius: 4px;
-        text-align: center;
-        font-weight: 600;
     }
 </style>
