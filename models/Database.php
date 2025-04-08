@@ -8,8 +8,7 @@ class Database
     {
         require_once __DIR__ . '/../config/config.php';
         try {
-            // $this->conn = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME, DB_USER, DB_PASS);
-            $this->conn = new PDO("mysql:host=" . DB_HOST . ";port=3307;dbname=" . DB_NAME, DB_USER, DB_PASS);
+            $this->conn = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME, DB_USER, DB_PASS);
             $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             $this->conn->exec("SET NAMES utf8");
         } catch (PDOException $e) {

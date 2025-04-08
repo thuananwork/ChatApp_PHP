@@ -85,26 +85,24 @@ $msg = $_GET['msg'] ?? ''; // Thông báo (nếu có)
 
             <!-- Nội dung chính -->
             <section class="content col-md-8">
-                <div class="sidebar-section">
-                    <h3><i class="fas fa-info-circle"></i> Hãy chiêm ngưỡng vẽ đẹp của Van Gogh</h3>
+                <div id="chat-window" class="chat-window d-none">
+                    <div class="chat-header">
+                        <img src="" alt="Avatar" class="chat-avatar" id="chat-user-avatar">
+                        <span id="chat-user-name"></span>
+                    </div>
+                    <div class="chat-messages" id="chat-messages">
+                        <!-- Messages will be loaded here -->
+                    </div>
+                    <div class="chat-input">
+                        <form id="chat-form" class="d-flex">
+                            <input type="text" id="message-input" class="form-control" placeholder="Nhập tin nhắn...">
+                            <button type="submit" class="btn btn-primary ml-2">Gửi</button>
+                        </form>
+                    </div>
                 </div>
-                <div class="box">
-                    <span style="--i:1;"><img src="../images/a1.jpg" alt=""></span>
-                    <span style="--i:2;"><img src="../images/a2.jpg" alt=""></span>
-                    <span style="--i:3;"><img src="../images/a3.jpg" alt=""></span>
-                    <span style="--i:4;"><img src="../images/a4.jpg" alt=""></span>
-                    <span style="--i:5;"><img src="../images/a5.jpg" alt=""></span>
-                    <span style="--i:6;"><img src="../images/a6.jpg" alt=""></span>
-                    <span style="--i:7;"><img src="../images/a7.jpg" alt=""></span>
-                    <span style="--i:8;"><img src="../images/a8.jpg" alt=""></span>
+                <div id="welcome-message" class="text-center mt-5">
+                    <h4>Chọn một người bạn để bắt đầu trò chuyện</h4>
                 </div>
-                <script type="text/javascript">
-                    let box = document.querySelector('.box');
-                    window.onmousemove = function(e) {
-                        let x = e.clientX / 3;
-                        box.style.transform = "perspective(1000px) rotateY(" + x + "deg)";
-                    }
-                </script>
             </section>
 
         </div>
@@ -132,9 +130,94 @@ $msg = $_GET['msg'] ?? ''; // Thông báo (nếu có)
     </div>
 
     <!-- Thư viện JavaScript -->
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <!-- JavaScript xử lý chat -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const chatWindow = document.getElementById('chat-window');
+            const welcomeMessage = document.getElementById('welcome-message');
+            const chatMessages = document.getElementById('chat-messages');
+            const chatForm = document.getElementById('chat-form');
+            const messageInput = document.getElementById('message-input');
+            const chatUserName = document.getElementById('chat-user-name');
+            const chatUserAvatar = document.getElementById('chat-user-avatar');
+            let currentChatId = null;
+
+            // Xử lý khi click vào bạn bè
+            document.querySelectorAll('.friend-list a').forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const friendId = this.href.split('to_id=')[1];
+                    const friendName = this.querySelector('span').textContent;
+                    const friendAvatar = this.querySelector('img').src;
+
+                    // Hiển thị chat window
+                    welcomeMessage.classList.add('d-none');
+                    chatWindow.classList.remove('d-none');
+                    chatUserName.textContent = friendName;
+                    chatUserAvatar.src = friendAvatar;
+                    currentChatId = friendId;
+
+                    // Load tin nhắn
+                    loadMessages(friendId);
+                });
+            });
+
+            // Hàm load tin nhắn
+            function loadMessages(friendId) {
+                fetch(`index.php?action=get_messages&friend_id=${friendId}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        chatMessages.innerHTML = '';
+                        data.messages.forEach(message => {
+                            const messageElement = document.createElement('div');
+                            messageElement.className = `message ${message.from_id == <?= $user['id'] ?> ? 'sent' : 'received'}`;
+                            messageElement.innerHTML = `
+                                <div class="message-content">
+                                    ${message.content}
+                                </div>
+                                <div class="message-time">
+                                    ${message.created_at}
+                                </div>
+                            `;
+                            chatMessages.appendChild(messageElement);
+                        });
+                        chatMessages.scrollTop = chatMessages.scrollHeight;
+                    });
+            }
+
+            // Xử lý gửi tin nhắn
+            chatForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                if (!messageInput.value.trim() || !currentChatId) return;
+
+                fetch('index.php?action=send_message', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded',
+                        },
+                        body: `to_id=${currentChatId}&message=${encodeURIComponent(messageInput.value)}`
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            messageInput.value = '';
+                            loadMessages(currentChatId);
+                        }
+                    });
+            });
+
+            // Auto refresh messages every 5 seconds
+            setInterval(() => {
+                if (currentChatId) {
+                    loadMessages(currentChatId);
+                }
+            }, 5000);
+        });
+    </script>
 
     <!-- JavaScript xử lý hủy kết bạn -->
     <script>
